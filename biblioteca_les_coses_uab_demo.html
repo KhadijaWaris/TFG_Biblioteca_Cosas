@@ -1,0 +1,505 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Open Sans', Arial, sans-serif; font-size: 15px; color: #333; background: #fff; }
+  a { color: #007A33; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* UAB TOP BAR */
+  .uab-topbar { background: #fff; border-bottom: 1px solid #ddd; padding: 6px 0; font-size: 12px; color: #555; }
+  .uab-topbar-inner { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; gap: 8px; }
+  .uab-topbar a { color: #007A33; font-size: 12px; }
+
+  /* HEADER / NAV */
+  .site-header { background: #fff; border-bottom: 1px solid #ddd; }
+  .site-header-inner { max-width: 1100px; margin: 0 auto; padding: 12px 20px; }
+  .site-branding { display: flex; align-items: center; gap: 14px; margin-bottom: 4px; }
+  .site-title { font-size: 20px; font-weight: 700; color: #007A33; letter-spacing: -0.3px; }
+  .site-tagline { font-size: 12px; color: #666; margin-left: 2px; }
+
+  /* GREEN NAV */
+  .site-nav { background: #007A33; }
+  .site-nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; flex-wrap: wrap; gap: 0; }
+  .nav-link { display: inline-block; color: #fff; font-size: 13px; font-weight: 600; padding: 10px 14px; border-right: 1px solid rgba(255,255,255,0.15); transition: background 0.15s; }
+  .nav-link:hover, .nav-link.active { background: rgba(0,0,0,0.2); text-decoration: none; }
+
+  /* HERO BANNER */
+  .lab-hero { background: #1a1a1a; position: relative; overflow: hidden; height: 200px; display: flex; align-items: flex-end; }
+  .lab-hero-bg { position: absolute; inset: 0; background: linear-gradient(135deg, #004d20 0%, #007A33 40%, #1a3a1a 100%); opacity: 0.9; }
+  .lab-hero-pattern { position: absolute; inset: 0; opacity: 0.08; background-image: repeating-linear-gradient(45deg, #fff 0, #fff 1px, transparent 0, transparent 50%); background-size: 12px 12px; }
+  .lab-hero-content { position: relative; z-index: 1; padding: 20px 30px; }
+  .lab-hero-title { font-size: 26px; font-weight: 700; color: #fff; background: #000; display: inline-block; padding: 4px 10px; margin-bottom: 6px; }
+  .lab-hero-sub { font-size: 14px; color: rgba(255,255,255,0.85); }
+
+  /* BREADCRUMB */
+  .breadcrumb { background: #f5f5f3; border-bottom: 1px solid #ddd; padding: 8px 0; font-size: 12px; color: #666; }
+  .breadcrumb-inner { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+  .breadcrumb a { color: #007A33; }
+  .breadcrumb span { margin: 0 5px; }
+
+  /* MAIN LAYOUT */
+  .main-layout { max-width: 1100px; margin: 0 auto; padding: 30px 20px; display: grid; grid-template-columns: 1fr 280px; gap: 40px; }
+  .content-area { min-width: 0; }
+  .sidebar { min-width: 0; }
+
+  /* INTRO TEXT */
+  .intro-text { font-size: 15px; color: #444; line-height: 1.7; margin-bottom: 28px; padding: 14px 18px; background: #f0f7f3; border-left: 4px solid #007A33; border-radius: 0 4px 4px 0; }
+
+  /* SECTION HEADINGS */
+  .section-heading { font-size: 18px; font-weight: 700; color: #1a1a1a; margin: 28px 0 16px; padding-bottom: 8px; border-bottom: 2px solid #007A33; }
+
+  /* FILTER BAR */
+  .filter-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; align-items: center; }
+  .filter-label { font-size: 13px; color: #555; font-weight: 600; margin-right: 4px; }
+  .filter-btn { background: #fff; border: 1.5px solid #007A33; color: #007A33; border-radius: 20px; padding: 4px 14px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+  .filter-btn:hover, .filter-btn.active { background: #007A33; color: #fff; }
+  .search-box { flex: 1; min-width: 160px; padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; }
+
+  /* CATALOG GRID */
+  .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 16px; margin-bottom: 28px; }
+  .item-card { border: 1px solid #ddd; border-radius: 6px; overflow: hidden; background: #fff; transition: box-shadow 0.15s, transform 0.15s; cursor: pointer; }
+  .item-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.12); transform: translateY(-2px); }
+  .item-card-img { background: #f0f7f3; height: 100px; display: flex; align-items: center; justify-content: center; font-size: 36px; border-bottom: 1px solid #eee; }
+  .item-card-body { padding: 10px 12px; }
+  .item-card-name { font-size: 13px; font-weight: 700; color: #1a1a1a; margin-bottom: 4px; }
+  .item-card-cat { font-size: 11px; color: #007A33; font-weight: 600; text-transform: uppercase; margin-bottom: 6px; }
+  .item-card-footer { display: flex; align-items: center; justify-content: space-between; }
+  .status-badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; }
+  .status-available { background: #d4edda; color: #155724; }
+  .status-loan { background: #fff3cd; color: #856404; }
+  .status-repair { background: #f8d7da; color: #721c24; }
+  .btn-reserve { background: #007A33; color: #fff; border: none; border-radius: 4px; padding: 4px 10px; font-size: 11px; font-weight: 700; cursor: pointer; transition: background 0.15s; }
+  .btn-reserve:hover { background: #005a24; }
+  .btn-reserve:disabled { background: #ccc; cursor: not-allowed; }
+
+  /* LOAN FORM */
+  .loan-form-section { background: #f9f9f7; border: 1px solid #ddd; border-radius: 6px; padding: 20px; margin-bottom: 28px; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .form-field { display: flex; flex-direction: column; gap: 4px; }
+  .form-field label { font-size: 12px; font-weight: 700; color: #555; text-transform: uppercase; letter-spacing: 0.3px; }
+  .form-field input, .form-field select { padding: 7px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; background: #fff; }
+  .form-field input:focus, .form-field select:focus { outline: 2px solid #007A33; border-color: #007A33; }
+  .btn-primary { background: #007A33; color: #fff; border: none; padding: 10px 24px; border-radius: 4px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 12px; transition: background 0.15s; }
+  .btn-primary:hover { background: #005a24; }
+
+  /* STATS */
+  .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 28px; }
+  .stat-card { background: #f0f7f3; border-radius: 6px; padding: 14px 16px; text-align: center; border: 1px solid #c3e0cc; }
+  .stat-num { font-size: 28px; font-weight: 700; color: #007A33; line-height: 1; }
+  .stat-label { font-size: 11px; color: #555; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* SIDEBAR */
+  .sidebar-box { border: 1px solid #ddd; border-radius: 6px; padding: 16px; margin-bottom: 20px; background: #fff; }
+  .sidebar-box h4 { font-size: 13px; font-weight: 700; color: #1a1a1a; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #eee; text-transform: uppercase; letter-spacing: 0.3px; }
+  .sidebar-box p, .sidebar-box li { font-size: 13px; color: #555; line-height: 1.6; }
+  .sidebar-box ul { padding-left: 16px; }
+  .sidebar-box li { margin-bottom: 4px; }
+  .sidebar-box address { font-style: normal; font-size: 13px; color: #555; line-height: 1.8; }
+  .sidebar-cta { display: block; width: 100%; background: #007A33; color: #fff; text-align: center; padding: 10px; border-radius: 4px; font-size: 13px; font-weight: 700; margin-top: 10px; cursor: pointer; border: none; transition: background 0.15s; }
+  .sidebar-cta:hover { background: #005a24; }
+  .sidebar-link { display: block; color: #007A33; font-size: 13px; font-weight: 600; padding: 5px 0; border-bottom: 1px solid #f0f0f0; }
+  .sidebar-link:last-child { border-bottom: none; }
+
+  /* MODAL OVERLAY (faux viewport approach) */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; align-items: center; justify-content: center; }
+  .modal-overlay.open { display: flex; }
+  .modal-box { background: #fff; border-radius: 8px; padding: 24px; width: 90%; max-width: 420px; position: relative; }
+  .modal-title { font-size: 17px; font-weight: 700; color: #007A33; margin-bottom: 12px; }
+  .modal-close { position: absolute; top: 14px; right: 16px; background: none; border: none; font-size: 20px; cursor: pointer; color: #666; }
+  .modal-item-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .modal-detail { font-size: 13px; color: #555; margin-bottom: 14px; }
+  .modal-field { margin-bottom: 10px; }
+  .modal-field label { display: block; font-size: 12px; font-weight: 700; color: #555; text-transform: uppercase; margin-bottom: 3px; }
+  .modal-field input, .modal-field select { width: 100%; padding: 7px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; }
+  .modal-field input:focus, .modal-field select:focus { outline: 2px solid #007A33; }
+  .modal-confirm { background: #007A33; color: #fff; border: none; padding: 9px 20px; border-radius: 4px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 6px; width: 100%; }
+
+  /* SUCCESS TOAST */
+  .toast { position: fixed; bottom: 24px; right: 24px; background: #155724; color: #fff; padding: 12px 20px; border-radius: 6px; font-size: 13px; font-weight: 600; z-index: 200; display: none; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+  .toast.show { display: block; }
+
+  /* FOOTER */
+  .site-footer { background: #333; color: #ccc; padding: 24px 0; margin-top: 40px; font-size: 13px; }
+  .footer-inner { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; }
+  .footer-col h5 { color: #fff; font-size: 13px; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .footer-col p, .footer-col a { font-size: 12px; color: #aaa; line-height: 1.8; display: block; }
+  .footer-col a:hover { color: #fff; }
+  .footer-bottom { text-align: center; margin-top: 20px; font-size: 11px; color: #777; border-top: 1px solid #444; padding-top: 16px; }
+
+  /* RESPONSIVE */
+  @media (max-width: 700px) {
+    .main-layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .form-grid { grid-template-columns: 1fr; }
+    .footer-inner { grid-template-columns: 1fr; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+
+<!-- TOP UAB BAR -->
+<div class="uab-topbar">
+  <div class="uab-topbar-inner">
+    <a href="#">Universitat Autònoma de Barcelona</a>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="site-header">
+  <div class="site-header-inner">
+    <div class="site-branding">
+      <div>
+        <div class="site-title">Laboratoris d'innovació Oberta</div>
+        <div class="site-tagline">UAB Open Labs – espai obert per les ments obertes</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a class="nav-link" href="#">Portada</a>
+    <a class="nav-link" href="#">Qui som</a>
+    <a class="nav-link" href="#">Laboratoris</a>
+    <a class="nav-link" href="#">Comunitats</a>
+    <a class="nav-link" href="#">Projectes</a>
+    <a class="nav-link" href="#">Equipament</a>
+    <a class="nav-link" href="#">Actualitat</a>
+    <a class="nav-link" href="#">Contacte</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="lab-hero">
+  <div class="lab-hero-bg"></div>
+  <div class="lab-hero-pattern"></div>
+  <div class="lab-hero-content">
+    <div class="lab-hero-title">Biblioteca de les Coses</div>
+    <div class="lab-hero-sub">CircuLab · UAB OpenLabs · Servei de préstec d'objectes</div>
+  </div>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="#">Portada</a><span>›</span>
+    <a href="#">Laboratoris</a><span>›</span>
+    <a href="#">CircuLab</a><span>›</span>
+    Biblioteca de les Coses
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main-layout">
+  <div class="content-area">
+
+    <!-- INTRO -->
+    <p class="intro-text">
+      La <strong>Biblioteca de les Coses</strong> és un servei de préstec d'objectes i materials disponible per a la comunitat UAB, ciutadania, empreses i organitzacions. L'objectiu és promoure el consum col·laboratiu, reduir residus i facilitar l'accés compartit a eines i recursos d'ús poc freqüent, en el marc de l'economia circular.
+    </p>
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num" id="stat-total">47</div>
+        <div class="stat-label">Objectes al catàleg</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="stat-available">31</div>
+        <div class="stat-label">Disponibles ara</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">12</div>
+        <div class="stat-label">Préstecs actius</div>
+      </div>
+    </div>
+
+    <!-- CATALOG -->
+    <h2 class="section-heading">Catàleg d'objectes</h2>
+
+    <div class="filter-bar">
+      <span class="filter-label">Categoria:</span>
+      <button class="filter-btn active" onclick="filterCat('tots', this)">Tots</button>
+      <button class="filter-btn" onclick="filterCat('eines', this)">Eines</button>
+      <button class="filter-btn" onclick="filterCat('electrònica', this)">Electrònica</button>
+      <button class="filter-btn" onclick="filterCat('mesura', this)">Mesura</button>
+      <button class="filter-btn" onclick="filterCat('clinic', this)">Clinic</button>
+      <input class="search-box" id="searchInput" placeholder="🔍  Cerca un objecte..." oninput="searchItems()" />
+    </div>
+
+    <div class="catalog-grid" id="catalogGrid"></div>
+
+    <!-- LOAN REQUEST FORM -->
+    <h2 class="section-heading">Sol·licitar préstec</h2>
+    <div class="loan-form-section">
+      <div class="form-grid">
+        <div class="form-field">
+          <label>Nom complet</label>
+          <input type="text" placeholder="Khadija Waris Begum" />
+        </div>
+        <div class="form-field">
+          <label>Correu electrònic</label>
+          <input type="email" placeholder="nom@uab.cat" />
+        </div>
+        <div class="form-field">
+          <label>Tipus d'usuari</label>
+          <select>
+            <option>Comunitat UAB (estudiant/PDI/PAS)</option>
+            <option>Entitat sense ànim de lucre</option>
+            <option>Empresa petita</option>
+            <option>Comunitat entorn UAB</option>
+            <option>Públic general</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Document d'identificació</label>
+          <input type="text" placeholder="DNI / Passaport / NIF" />
+        </div>
+        <div class="form-field">
+          <label>Objecte sol·licitat</label>
+          <select id="formItemSelect">
+            <option value="">— Selecciona un objecte —</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Data de recollida</label>
+          <input type="date" />
+        </div>
+        <div class="form-field">
+          <label>Data de devolució estimada</label>
+          <input type="date" />
+        </div>
+        <div class="form-field">
+          <label>Finalitat / Projecte</label>
+          <input type="text" placeholder="ús personal, projecte de recerca, TFG..." />
+        </div>
+      </div>
+      <button class="btn-primary" onclick="showToast('✅ Sol·licitud enviada! El personal del CircuLab es posarà en contacte amb tu en breu.')">Enviar sol·licitud de préstec</button>
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <h2 class="section-heading">Com funciona el servei</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:28px;">
+      <div style="padding:14px;background:#f0f7f3;border-radius:6px;border:1px solid #c3e0cc;">
+        <div style="font-size:22px;margin-bottom:8px;">1️⃣</div>
+        <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:4px;">Consulta el catàleg</div>
+        <div style="font-size:12px;color:#555;">Cerca l'objecte que necessites i comprova'n la disponibilitat.</div>
+      </div>
+      <div style="padding:14px;background:#f0f7f3;border-radius:6px;border:1px solid #c3e0cc;">
+        <div style="font-size:22px;margin-bottom:8px;">2️⃣</div>
+        <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:4px;">Fes-te soci/a</div>
+        <div style="font-size:12px;color:#555;">La membresía és obligatòria. Quota anual de 10–40 € segons perfil.</div>
+      </div>
+      <div style="padding:14px;background:#f0f7f3;border-radius:6px;border:1px solid #c3e0cc;">
+        <div style="font-size:22px;margin-bottom:8px;">3️⃣</div>
+        <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:4px;">Sol·licita el préstec</div>
+        <div style="font-size:12px;color:#555;">Omple el formulari o vine al CircuLab amb el teu document d'identitat.</div>
+      </div>
+      <div style="padding:14px;background:#f0f7f3;border-radius:6px;border:1px solid #c3e0cc;">
+        <div style="font-size:22px;margin-bottom:8px;">4️⃣</div>
+        <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:4px;">Retorna l'objecte</div>
+        <div style="font-size:12px;color:#555;">Torna l'objecte en bon estat al CircuLab dins del termini acordat.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-box">
+      <h4>On som</h4>
+      <address>
+        C/Serragalliners s/n (deixalleria)<br>
+        Campus de la UAB<br>
+        08193 Bellaterra<br>
+        (Cerdanyola del Vallès)
+      </address>
+      <button class="sidebar-cta" onclick="showToast('📍 Obre Google Maps en una nova finestra')">Veure al mapa</button>
+    </div>
+
+    <div class="sidebar-box">
+      <h4>Horari del servei</h4>
+      <p>Dimarts i dijous<br>
+      <strong style="color:#007A33;">10:00 – 14:00 h</strong><br>
+      (Octubre – Juny)</p>
+    </div>
+
+    <div class="sidebar-box">
+      <h4>Responsable</h4>
+      <p>Oficina de Sostenibilitat UAB<br>
+      <a href="#">sostenibilitat@uab.cat</a></p>
+    </div>
+
+    <div class="sidebar-box">
+      <h4>Perfils d'usuari</h4>
+      <ul>
+        <li>Comunitat UAB <em>(prioritat 1)</em></li>
+        <li>Entitats sense ànim de lucre</li>
+        <li>Empreses petites</li>
+        <li>Entorn proper (Bellaterra, Sabadell)</li>
+        <li>Públic general</li>
+      </ul>
+    </div>
+
+    <div class="sidebar-box">
+      <h4>Recursos relacionats</h4>
+      <a class="sidebar-link" href="#">▸ Borsa de Material Reutilitzable</a>
+      <a class="sidebar-link" href="#">▸ Projectes CircuLab</a>
+      <a class="sidebar-link" href="#">▸ Equipament CircuLab</a>
+      <a class="sidebar-link" href="#">▸ UAB OpenLabs</a>
+    </div>
+
+    <div class="sidebar-box" style="background:#f0f7f3;border-color:#c3e0cc;">
+      <h4 style="color:#007A33;">Impacte ambiental</h4>
+      <p style="font-size:12px;">Cada préstec estalvia una mitjana de <strong style="color:#007A33;">4,2 kg CO₂eq</strong> respecte a la compra individual.<br><br>
+      <em style="font-size:11px;">Calculat amb SimaPro (ISO 14040/14044)</em></p>
+    </div>
+  </aside>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-col">
+      <h5>UAB Open Labs</h5>
+      <a href="#">openlabs@uab.cat</a>
+      <a href="#">webs.uab.cat/openlabs</a>
+    </div>
+    <div class="footer-col">
+      <h5>Sobre el web</h5>
+      <a href="#">Avís legal</a>
+      <a href="#">Protecció de dades</a>
+      <a href="#">Accessibilitat web</a>
+    </div>
+    <div class="footer-col">
+      <h5>Universitat Autònoma de Barcelona</h5>
+      <p>© 2026 Universitat Autònoma de Barcelona</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    Biblioteca de les Coses — CircuLab UAB OpenLabs · Prototip funcional TFG 2025/2026
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title">Sol·licitar préstec</div>
+    <div class="modal-item-name" id="modal-item-name"></div>
+    <div class="modal-detail" id="modal-item-detail"></div>
+    <div class="modal-field">
+      <label>Nom complet</label>
+      <input type="text" placeholder="Khadija Waris Begum" />
+    </div>
+    <div class="modal-field">
+      <label>Correu UAB</label>
+      <input type="email" placeholder="nom@uab.cat" />
+    </div>
+    <div class="modal-field">
+      <label>Data devolució</label>
+      <input type="date" />
+    </div>
+    <button class="modal-confirm" onclick="confirmLoan()">Confirmar sol·licitud</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+const items = [
+  { id:1, name:'Kit Raspberry Pi 4', cat:'eines', icon:'🤖', status:'available', desc:'Marca: Raspberri Pi' },
+  { id:2, name:'Sensor Distància ultrasons', cat:'eines', icon:'📟', status:'available', desc:'Marca: Arduino, Model:Hc-SR04' },
+  { id:3, name:'Calculadora Avanzada', cat:'electrònica', icon:'🧮', status:'available', desc:'Marca: casio, Model: fx-991SP CW' },
+  { id:4, name:'Kit soldador', cat:'eines', icon:'⚡', status:'available', desc:'60W amb estany i flux' },
+  { id:5, name:'Projector portàtil', cat:'electrònica', icon:'📽️', status:'available', desc:'FullHD, HDMI + USB-C' },
+  { id:6, name:'Càmera rèflex', cat:'electrònica', icon:'📷', status:'loan', desc:'Canon EOS, 24MP, amb objectiu 50mm' },
+  { id:7, name:'Multímetre digital', cat:'mesura', icon:'🔌', status:'available', desc:'Marca: LEXMAN, Tensió AC/DC, resistència, freqüència' },
+  { id:8, name:'Balança de precisió', cat:'mesura', icon:'⚖️', status:'available', desc:'0–5 kg, resolució 1g' },
+  { id:9, name:'Cascs insonorització per estudiar ', cat:'electrònica', icon:'🎧', status:'available', desc:'Marca: Quiethings' },
+  { id:10, name:'Tensiomètre', cat:'mesura', icon:'🔌', status:'repair', desc:'Marca: OMRON' },
+  { id:11, name:'Oscil·loscopi', cat:'mesura', icon:'📊', status:'available', desc:'2 canals, 100MHz, USB' },
+  { id:12, name:'Arduino Kit', cat:'electrònica', icon:'🤖', status:'available', desc:'Mega 2560 + sensors + cables' },
+];
+
+let activeFilter = 'tots';
+
+function renderCatalog(list) {
+  const grid = document.getElementById('catalogGrid');
+  grid.innerHTML = '';
+  const select = document.getElementById('formItemSelect');
+  select.innerHTML = '<option value="">— Selecciona un objecte —</option>';
+  list.forEach(item => {
+    const statusLabel = { available:'Disponible', loan:'En préstec', repair:'En reparació' }[item.status];
+    const statusClass = { available:'status-available', loan:'status-loan', repair:'status-repair' }[item.status];
+    const canReserve = item.status === 'available';
+    const card = document.createElement('div');
+    card.className = 'item-card';
+    card.dataset.cat = item.cat;
+    card.innerHTML = `
+      <div class="item-card-img">${item.icon}</div>
+      <div class="item-card-body">
+        <div class="item-card-cat">${item.cat}</div>
+        <div class="item-card-name">${item.name}</div>
+        <div style="font-size:11px;color:#666;margin-bottom:8px;">${item.desc}</div>
+        <div class="item-card-footer">
+          <span class="status-badge ${statusClass}">${statusLabel}</span>
+          <button class="btn-reserve" ${canReserve?'':'disabled'} onclick="openModal(${item.id})">${canReserve?'Reservar':'No disp.'}</button>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+    if(canReserve) {
+      const opt = document.createElement('option');
+      opt.value = item.id;
+      opt.textContent = item.name;
+      select.appendChild(opt);
+    }
+  });
+}
+
+function filterCat(cat, btn) {
+  activeFilter = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}
+
+function searchItems() { applyFilters(); }
+
+function applyFilters() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const filtered = items.filter(item => {
+    const matchCat = activeFilter === 'tots' || item.cat === activeFilter;
+    const matchQ = item.name.toLowerCase().includes(q) || item.desc.toLowerCase().includes(q);
+    return matchCat && matchQ;
+  });
+  renderCatalog(filtered);
+}
+
+function openModal(id) {
+  const item = items.find(i => i.id === id);
+  document.getElementById('modal-item-name').textContent = item.icon + ' ' + item.name;
+  document.getElementById('modal-item-detail').textContent = item.desc;
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+}
+
+function confirmLoan() {
+  closeModal();
+  showToast('✅ Sol·licitud enviada! El personal del CircuLab es posarà en contacte amb tu en breu.');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+renderCatalog(items);
+</script>
